@@ -5,21 +5,25 @@ local tolerance = 300
 
 function work(player, pos) {
 	local city = city_x(pos.x, pos.y)
-	local target = split(city.get_name(),":")[1].tointeger()
+	local city_name_split = split(city.get_name(),":")
+	if(city_name_split.len() != 2){
+		return
+	}
+	local target = city_name_split[1].tointeger()
 	local low_limit = target - tolerance
 	local citizens = city.get_citizens()[0]
-
 	local num = tolerance.tostring()
 
-	while(target > citizens){
-		if(low_limit <= citizens){
+	while(citizens < target){
+		if(citizens > low_limit){
 			num = (target - citizens).tostring()
 		}
 		command_x(tool_change_city_size).work(player, pos, num)
 		local before_citizens = citizens
-		while(before_citizens == citizens){
+		do{
 			sleep()
-			citizens = city_x(pos.x, pos.y).get_citizens()[0]
+			citizens = city.get_citizens()[0]
 		}
+		while(before_citizens == citizens)
 	}
 }
