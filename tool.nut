@@ -12,13 +12,13 @@ function work(player, pos) {
 	local target = city_name_split[1].tointeger()
 	local low_limit = target - tolerance
 	local citizens = city.get_citizens()[0]
-	local num = tolerance.tostring()
+	local num = tolerance
 
 	while(citizens < target){
 		if(citizens > low_limit){
-			num = (target - citizens).tostring()
+			num = target - citizens
 		}
-		command_x(tool_change_city_size).work(player, pos, num)
+		city.change_size(num)
 		local before_citizens = citizens
 		do{
 			sleep()
